@@ -1,0 +1,58 @@
+<%- include('../../partials/_admin-start.ejs') %>
+
+    <div class="card">
+        <div class="card-header">Update product</div>
+        <div class="card-body">
+            <form action="/admin/products/<%= product._id %>/update?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-9">
+                        <input type="hidden" name="image" value="<%= product.image %>">
+                        <!-- image -->
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Image:</label>
+                            <img style="width:130px" src="/static/uploads/<%= product.image %>" alt="" class="img-fluid">
+                            <input type="file" name="image" id="image" class="form-control">
+                        </div>
+                        <!-- name -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name:</label>
+                            <input type="text" name="name" id="name" class="form-control" value="<%= product.name %>">
+                        </div>
+                        <!-- description -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Description:</label>
+                            <textarea name="description" id="description" rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <!-- categories -->
+                        <div class="card">
+                            <div class="card-header">Categories</div>
+                            <div class="card-body">
+                                <% categories.forEach(category => { %>
+                                    <div class="form-check">
+                                        <input 
+                                            type="checkbox" 
+                                            name="categories"
+                                            value="<%= category._id %>" 
+                                            class="form-check-input" 
+                                            id="category_<%= category._id %>"
+                                            <%= product.categories.some(pc => pc.id == category._id) && "checked" %>
+                                        >
+                                        <label class="form-check-label" for="category_<%= category.id %>">
+                                          <%= category.name %>
+                                        </label>
+                                      </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+<%- include('../../partials/_admin-finish.ejs') %>

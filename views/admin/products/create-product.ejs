@@ -1,0 +1,55 @@
+<%- include('../../partials/_admin-start.ejs') %>
+
+    <div class="card">
+        <div class="card-header">Create product</div>
+        <div class="card-body">
+            <form action="/admin/products/create?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-9">
+                        <!-- image -->
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Image:</label>
+                            <input type="file" name="image" id="image" class="form-control">
+                        </div>
+                        <!-- name -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name:</label>
+                            <input type="text" name="name" id="name" class="form-control">
+                        </div>
+                        <!-- description -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Description:</label>
+                            <textarea name="description" id="description" rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <!-- categories -->
+                        <div class="card">
+                            <div class="card-header">Categories</div>
+                            <div class="card-body">
+                                <% categories.forEach(category => { %>
+                                    <div class="form-check">
+                                        <input 
+                                            type="checkbox" 
+                                            name="categories" 
+                                            class="form-check-input" 
+                                            value="<%= category._id %>" 
+                                            id="category_<%= category._id %>"
+                                        >
+                                        <label class="form-check-label" for="category_<%= category._id %>">
+                                          <%= category.name %>
+                                        </label>
+                                      </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+<%- include('../../partials/_admin-finish.ejs') %>

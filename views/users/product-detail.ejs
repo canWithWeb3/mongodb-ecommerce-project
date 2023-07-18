@@ -1,0 +1,55 @@
+<%- include('../partials/_html-start.ejs') %>
+<%- include('../partials/_navbar.ejs') %>
+
+<main class="home">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-3">
+                <img src="/static/uploads/<%= product.image %>" alt="" class="img-fluid">
+            </div>
+            <div class="col-lg-9">
+                <h1><%= product.name %></h1>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim accusamus a, odit, architecto quidem voluptates ad et modi cum obcaecati dolor sint quia animi suscipit velit explicabo illo debitis ducimus maxime culpa.</p>
+                <form id="addToCartForm" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    const addToCartForm = document.getElementById("addToCartForm")
+    addToCartForm.addEventListener("click", async e => {
+        e.preventDefault()
+
+        const res = await fetch(`/product-detail/<%= product._id %>`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        })
+
+        const data = await res.json()
+        console.log(data)
+        if(data.error){
+            swal({
+                title: "Hata",
+                text: data.error,
+                icon: "warning",
+                button: "Tamam",
+              });
+        }else if(data.success === true){
+            swal({
+                title: "Başarılı",
+                text: "Ürün başarıyla sepetinize eklendi.",
+                icon: "success",
+                button: "Tamam",
+              });
+        }
+        
+        
+    })
+</script>
+
+<%- include('../partials/_footer.ejs') %>
+<%- include('../partials/_html-finish.ejs') %>
